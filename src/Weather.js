@@ -3,11 +3,12 @@ import WeatherInfo from "./WeatherInfo";
 import "./Weather.css";
 import axios from "axios";
 
-export default function Weather() {
-  const [weatherData, setWeatherData] = useState(null);
-  const [city, setCity] = useState(proprs.city);
+export default function Weather(props) {
+  const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.city);
   function handleResponse(response) {
     setWeatherData({
+      ready: true,
       temperature: response.data.main.temp,
       humidity: response.data.main.humidity,
       date: new Date(response.data.dt * 1000),
@@ -21,7 +22,6 @@ export default function Weather() {
 
   function search() {
     const apiKey = "6d68aadfacdd4f5163bc273049a0cf2d";
-    let city = "New York";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
   }
